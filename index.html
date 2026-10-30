@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Siddharth Singh | Founder & Lead Architect at Webnexa</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            obsidian: {
+              950: '#06080d',
+              900: '#0a0e17',
+              850: '#101623',
+              800: '#172030',
+              700: '#233045',
+            },
+            sage: {
+              200: '#d1fae5',
+              300: '#a7f3d0',
+              400: '#6ee7b7',
+              500: '#34d399',
+              600: '#10b981',
+              glow: '#059669',
+            },
+            celestial: {
+              300: '#bae6fd',
+              400: '#7dd3fc',
+              500: '#38bdf8',
+              dim: '#0369a1',
+            },
+            titanium: {
+              100: '#f8fafc',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+            }
+          },
+          animation: {
+            'aurora-glow': 'auroraGlow 10s ease-in-out infinite alternate',
+            'float-slow': 'floatSlow 6s ease-in-out infinite',
+            'radar-spin': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            auroraGlow: {
+              '0%': { transform: 'scale(1) translate(0px, 0px)', opacity: '0.35' },
+              '100%': { transform: 'scale(1.25) translate(40px, -20px)', opacity: '0.65' },
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      outline-offset: 2px;
+    }
+
+    body {
+      background-color: #06080d;
+      color: #cbd5e1;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Calming Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06080d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #172030;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #34d399;
+    }
+
+    /* Dribbble-Grade Glassmorphism & Micro 1px Borders */
+    .dribbble-glass {
+      background: rgba(10, 14, 23, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Interactive Spotlight Card with Dynamic Pointer Radial Gradient */
+    .spotlight-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(16, 22, 35, 0.8) 0%, rgba(10, 14, 23, 0.92) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 1.25rem;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(
+        500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(52, 211, 153, 0.4),
+        transparent 60%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    .spotlight-card:hover {
+      box-shadow: 0 16px 36px -12px rgba(5, 150, 105, 0.22);
+      transform: translateY(-3px);
+    }
+
+    /* Calming Glow Filter */
+    .zen-glow {
+      text-shadow: 0 0 28px rgba(52, 211, 153, 0.35);
+    }
+
+    /* Slider Styling */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: #172030;
+      border-radius: 9999px;
+      height: 6px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #34d399;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.6);
+      transition: transform 0.15s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+
+<body class="selection:bg-sage-500/20 selection:text-sage-300 relative min-h-screen pb-32 md:pb-20">
+
+  <!-- 3D SPATIAL CANVAS (Three.js Quantum Polyhedron & Gyroscope) -->
+  <div id="canvas-container" class="fixed inset-0 z-0 pointer-events-auto">
+    <canvas id="artifact-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+  </div>
+
+  <!-- Ambient Bioluminescent Depth Fog (Calming Zen Lighting) -->
+  <div class="fixed -top-16 left-1/2 -translate-x-1/2 w-[340px] sm:w-[700px] h-[340px] sm:h-[500px] bg-sage-500/[0.05] rounded-full blur-[150px] pointer-events-none -z-10 animate-aurora-glow"></div>
+  <div class="fixed bottom-20 -right-20 w-[300px] sm:w-[550px] h-[300px] bg-celestial-500/[0.04] rounded-full blur-[140px] pointer-events-none -z-10"></div>
+
+  <!-- TOP MINIMAL DRIBBBLE-STYLE NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 py-3.5 transition-all duration-300">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand & Founder Credential Monogram -->
+      <a href="#hero" class="flex items-center gap-3 group" onclick="playTactileAudio('tap')">
+        <div class="w-10 h-10 rounded-2xl dribbble-glass flex items-center justify-center font-mono font-bold text-xs text-sage-400 border border-white/10 group-hover:border-sage-400/40 group-hover:scale-105 transition-all shadow-md">
+          WN
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-bold tracking-tight text-white group-hover:text-sage-300 transition-colors">Webnexa</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title="System Operational"></span>
+          </div>
+          <span class="text-[10px] font-mono text-titanium-400 tracking-wider">Siddharth Singh • Founder & Lead Architect</span>
+        </div>
+      </a>
+
+      <!-- Quick Action Controls & Availability Tag -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Live Status Pill -->
+        <div class="hidden lg:inline-flex items-center gap-2 px-3 py-1.5 rounded-full dribbble-glass border border-white/10 text-[11px] font-mono text-titanium-300">
+          <span class="w-2 h-2 rounded-full bg-sage-400 animate-ping"></span>
+          <span>Available for Production Contracts</span>
+        </div>
+
+        <!-- Direct Phone Trigger -->
+        <a href="tel:+918619089899" onclick="playTactileAudio('tap')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full dribbble-glass border border-white/10 text-titanium-300 hover:text-white text-xs font-mono transition-colors shadow-sm" title="Call Siddharth Directly">
+          <i data-lucide="phone" class="w-3.5 h-3.5 text-sage-400"></i>
+          <span>+91 861 908 9899</span>
+        </a>
+
+        <!-- Sound Toggle Button -->
+        <button id="sound-toggle-btn" class="dribbble-glass px-3 py-1.5 rounded-full text-titanium-400 hover:text-white flex items-center gap-1.5 text-[11px] font-mono border border-white/10 transition-colors" title="Toggle Tactile Acoustics">
+          <i data-lucide="volume-x" class="w-3.5 h-3.5 text-titanium-400" id="sound-icon"></i>
+          <span class="hidden sm:inline" id="sound-label">Acoustics: Muted</span>
+        </button>
+
+        <!-- Official Agency Link -->
+        <a href="https://webnexa-wine.vercel.app/" target="_blank" rel="noopener noreferrer" onclick="playTactileAudio('tap')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sage-500/10 border border-sage-500/30 text-sage-300 hover:bg-sage-500/20 text-xs font-mono transition-colors shadow-sm">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-sage-400"></i>
+          <span class="hidden xs:inline">webnexa.app</span>
+          <i data-lucide="external-link" class="w-3 h-3 opacity-60"></i>
+        </a>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="relative z-10 pt-20 sm:pt-28">
+
+    <!-- 1. SPATIAL HERO EXPERIENCE -->
+    <section id="hero" class="min-h-[84vh] flex flex-col justify-between px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative pt-4 pb-12">
+      
+      <div class="max-w-2xl">
+        
+        <!-- Dribbble Minimal Badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-mono text-titanium-300 mb-5 tracking-wide backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full bg-sage-400 animate-pulse"></span>
+          <span>Webnexa Digital Engineering Lab • 2026</span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-5">
+          Crafting high-velocity digital products with 
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-emerald-300 to-celestial-400 zen-glow font-extrabold">
+            mathematical elegance
+          </span> 
+          and AI force-multipliers.
+        </h1>
+
+        <p class="text-titanium-400 text-xs sm:text-base leading-relaxed mb-8 font-normal max-w-xl">
+          I am <strong class="text-white">Siddharth Singh</strong>, Founder & Lead Solutions Architect at <strong class="text-sage-300">Webnexa</strong>. Backed by rigorous B.Sc. Mathematics training, Government ITI COPA accreditation, and state-of-the-art AI-augmented developer workflows (Cursor, Claude 3.7, Gemini 2.5), I architect and ship enterprise ERPs, healthcare queue dispatchers, and sub-second web platforms in record turnaround cycles.
+        </p>
+
+        <!-- Dynamic Action Hub -->
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="#projects" onclick="playTactileAudio('tap')" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-sage-500 hover:bg-sage-400 text-obsidian-950 font-bold text-xs transition-all shadow-lg shadow-sage-500/20 active:scale-95">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>Explore 10 Production Systems</span>
+          </a>
+
+          <a href="https://wa.me/918619089899?text=Hello%20Siddharth,%20I%20reviewed%20your%20Webnexa%20production%20portfolio%20and%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" onclick="playTactileAudio('chime')" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl dribbble-glass hover:bg-emerald-500/10 text-emerald-300 text-xs font-mono border border-emerald-500/30 transition-all active:scale-95">
+            <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
+            <span>WhatsApp (+91 861 908 9899)</span>
+          </a>
+
+          <a href="#terminal" onclick="playTactileAudio('tap')" class="p-3 rounded-2xl dribbble-glass hover:text-white text-titanium-400 border border-white/10 transition-colors" title="Launch Developer Terminal">
+            <i data-lucide="terminal" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3D Spatial Canvas Controls & Live Telemetry -->
+      <div class="mt-12 sm:mt-8 pt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/[0.06] text-xs font-mono text-titanium-500">
+        <div class="flex items-center gap-2 text-titanium-400">
+          <i data-lucide="hand" class="w-4 h-4 text-sage-400 animate-bounce"></i>
+          <span>Swipe or drag 3D Monolith • Interactive WebGL Space</span>
+        </div>
+        <div class="flex items-center gap-4 text-titanium-400">
+          <span>Engine FPS: <span id="fps-counter" class="text-sage-400 font-bold">60</span></span>
+          <span>•</span>
+          <span>Verified Deployments: <span class="text-white font-bold">10 Live</span></span>
+          <span>•</span>
+          <button id="reset-cam-btn" class="text-sage-400 hover:underline">Reset Orbit</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 2. AI VELOCITY MATRIX (Comparative Engineering Benchmark) -->
+    <section id="velocity" class="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      <div class="text-left mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-950/60 border border-sage-800/40 text-[10px] font-mono text-sage-300 tracking-wider uppercase mb-2">
+          <i data-lucide="gauge" class="w-3 h-3 text-sage-400"></i> Engineering Throughput
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">The AI-Augmented Engineering Matrix</h2>
+        <p class="text-titanium-400 text-xs sm:text-sm max-w-2xl mt-1">
+          By eliminating handover friction between specs and code, I turn complex business ideas into tested production deployments ~75% faster than traditional developer teams.
+        </p>
+      </div>
+
+      <div class="dribbble-glass rounded-3xl p-5 sm:p-8 border border-white/[0.08] shadow-2xl">
+        
+        <!-- Interactive Benchmark Slider -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between text-xs font-mono mb-2">
+            <span class="text-titanium-300">Project Scope Level:</span>
+            <span id="scope-label" class="text-sage-300 font-bold">Commercial Web Portal & Local SEO</span>
+          </div>
+          <input type="range" id="scope-slider" min="1" max="3" value="1" step="1" class="w-full">
+          <div class="flex justify-between text-[10px] font-mono text-titanium-500 mt-1">
+            <span>Fast Business Web</span>
+            <span>Enterprise ERP / Hospital Kiosk</span>
+            <span>Full Multi-Platform Ecosystem</span>
+          </div>
+        </div>
+
+        <!-- Metric Cards Comparison Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+          
+          <!-- Standard Dev Team -->
+          <div class="p-5 rounded-2xl bg-obsidian-900/80 border border-rose-500/10">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono uppercase text-titanium-400 flex items-center gap-1.5 font-semibold">
+                <i data-lucide="users" class="w-3.5 h-3.5 text-rose-400"></i> Standard 4-Person Dev Team
+              </span>
+              <span id="trad-total-days" class="text-base font-mono font-bold text-rose-300">14 Days</span>
+            </div>
+            
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-400 mb-1">
+                  <span>Specs, DB Design & Schema</span>
+                  <span id="trad-spec">3 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="trad-spec-bar" class="h-full bg-rose-400/50 rounded-full transition-all duration-500" style="width: 50%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-400 mb-1">
+                  <span>Component Coding & Integration</span>
+                  <span id="trad-code">7 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="trad-code-bar" class="h-full bg-rose-400/50 rounded-full transition-all duration-500" style="width: 70%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-400 mb-1">
+                  <span>Testing, Fixes & Deployment</span>
+                  <span id="trad-fix">4 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="trad-fix-bar" class="h-full bg-rose-400/50 rounded-full transition-all duration-500" style="width: 55%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/[0.04] text-[11px] text-titanium-500 italic">
+              Heavy meeting overhead, slow feedback loops, pull request merge conflicts.
+            </div>
+          </div>
+
+          <!-- Siddharth Singh / Webnexa -->
+          <div class="p-5 rounded-2xl bg-obsidian-900/80 border border-sage-500/20 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-28 h-28 bg-sage-500/[0.06] rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono uppercase text-sage-400 flex items-center gap-1.5 font-bold">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-sage-400"></i> Siddharth Singh (Webnexa)
+              </span>
+              <span id="ai-total-days" class="text-base font-mono font-bold text-sage-300">2.5 Days</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-300 mb-1">
+                  <span>AI Structured Prompt Architecture</span>
+                  <span id="ai-spec" class="text-sage-400 font-mono">0.5 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="ai-spec-bar" class="h-full bg-sage-400 rounded-full transition-all duration-500" style="width: 18%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-300 mb-1">
+                  <span>Cursor IDE Multi-File Code Synthesis</span>
+                  <span id="ai-code" class="text-sage-400 font-mono">1.0 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="ai-code-bar" class="h-full bg-sage-400 rounded-full transition-all duration-500" style="width: 25%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] text-titanium-300 mb-1">
+                  <span>Edge Cloud Deploy & SEO Polish</span>
+                  <span id="ai-fix" class="text-sage-400 font-mono">1.0 days</span>
+                </div>
+                <div class="h-1.5 w-full bg-obsidian-800 rounded-full overflow-hidden">
+                  <div id="ai-fix-bar" class="h-full bg-sage-400 rounded-full transition-all duration-500" style="width: 25%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-white/[0.04] text-[11px] text-sage-300/80 font-mono">
+              ⚡ ~78% Turnaround Acceleration • Zero communication handover delay.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 3. DRIBBBLE-STYLE PRODUCTION SHOWCASE (ALL 10 LIVE CLIENT PROJECTS) -->
+    <section id="projects" class="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-950/60 border border-sage-800/40 text-[10px] font-mono text-sage-300 tracking-wider uppercase mb-2">
+            <i data-lucide="layers" class="w-3 h-3 text-sage-400"></i> Production Deployments
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">All 10 Live Client Applications</h2>
+          <p class="text-titanium-400 text-xs sm:text-sm mt-1">
+            Real systems engineered and delivered by Webnexa across Rajasthan and remote clients.
+          </p>
+        </div>
+
+        <!-- Filter Category Tabs -->
+        <div class="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl dribbble-glass border border-white/[0.08] self-start md:self-end text-xs font-mono" id="filter-tabs">
+          <button class="filter-btn px-3 py-1.5 rounded-xl text-obsidian-950 bg-sage-400 font-semibold transition-all shadow-sm" data-filter="all">All (10)</button>
+          <button class="filter-btn px-3 py-1.5 rounded-xl text-titanium-300 hover:text-white hover:bg-white/[0.05] transition-all" data-filter="enterprise">ERP & Health</button>
+          <button class="filter-btn px-3 py-1.5 rounded-xl text-titanium-300 hover:text-white hover:bg-white/[0.05] transition-all" data-filter="commercial">Commercial & 3D</button>
+          <button class="filter-btn px-3 py-1.5 rounded-xl text-titanium-300 hover:text-white hover:bg-white/[0.05] transition-all" data-filter="lifestyle">Food & Academy</button>
+        </div>
+      </div>
+
+      <!-- Systems Grid (10 Live Projects) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="projects-grid">
+        <!-- Injected via JavaScript with 3D Tilt and Pointer Spotlights -->
+      </div>
+
+    </section>
+
+    <!-- 4. CORE ENGINEERING EXPERTISE & BENTO GRID -->
+    <section class="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      
+      <div class="text-left mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-celestial-950/60 border border-celestial-800/40 text-[10px] font-mono text-celestial-300 tracking-wider uppercase mb-2">
+          <i data-lucide="cpu" class="w-3 h-3 text-celestial-400"></i> Technical Foundations
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Full-Stack & Architectural Capabilities</h2>
+        <p class="text-titanium-400 text-xs sm:text-sm mt-1">How my mathematics foundation and technical tools come together.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="spotlight-card p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-2xl bg-sage-950 border border-sage-500/30 flex items-center justify-center text-sage-400 mb-4">
+              <i data-lucide="database" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-2">Custom ERPs & Portals</h3>
+            <p class="text-xs text-titanium-400 leading-relaxed">
+              Multi-tenant school administration, doctor OPD queue calling, dynamic fee dues radar, and automated attendance pipelines.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-sage-300 font-semibold">
+            Next.js • Firebase • REST APIs
+          </div>
+        </div>
+
+        <div class="spotlight-card p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-2xl bg-celestial-950 border border-celestial-500/30 flex items-center justify-center text-celestial-400 mb-4">
+              <i data-lucide="file-text" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-2">Pixel-Perfect PDF Engines</h3>
+            <p class="text-xs text-titanium-400 leading-relaxed">
+              WeasyPrint & CSS Paged Media pipelines rendering print-ready student marksheets, admit cards, and thermal bills with zero margin drift.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-celestial-300 font-semibold">
+            Python • WeasyPrint • Jinja2
+          </div>
+        </div>
+
+        <div class="spotlight-card p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-2xl bg-emerald-950 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4">
+              <i data-lucide="smartphone" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-2">Cross-Platform Apps</h3>
+            <p class="text-xs text-titanium-400 leading-relaxed">
+              Responsive Flutter mobile apps with strict intellectual property protection, FLAG_SECURE screenshot blocking, and dynamic phone watermarks.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-emerald-300 font-semibold">
+            Flutter • Dart • Android Flags
+          </div>
+        </div>
+
+        <div class="spotlight-card p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-2xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+              <i data-lucide="map-pin" class="w-5 h-5"></i>
+            </div>
+            <h3 class="text-sm font-bold text-white mb-2">Sub-Second Web & SEO</h3>
+            <p class="text-xs text-titanium-400 leading-relaxed">
+              Instant edge delivery, localized Schema.org metadata, and Google indexing to dominate regional search rankings in Rajasthan.
+            </p>
+          </div>
+          <div class="mt-5 pt-3 border-t border-white/[0.06] text-[10px] font-mono text-amber-300 font-semibold">
+            Vercel • Netlify • Schema.org
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- 5. INTERACTIVE DEVELOPER CLI TERMINAL -->
+    <section id="terminal" class="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      
+      <div class="text-left mb-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-950/60 border border-sage-800/40 text-[10px] font-mono text-sage-300 tracking-wider uppercase mb-2">
+          <i data-lucide="terminal" class="w-3 h-3 text-sage-400"></i> Command Shell
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Webnexa Interactive Terminal</h2>
+        <p class="text-titanium-400 text-xs sm:text-sm mt-1">Directly query company credentials, client rosters, and contact parameters.</p>
+      </div>
+
+      <div class="dribbble-glass rounded-3xl border border-white/[0.09] overflow-hidden font-mono text-xs shadow-2xl">
+        
+        <!-- Terminal Header -->
+        <div class="bg-obsidian-900/90 px-4 py-2.5 border-b border-white/[0.06] flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="text-[11px] text-titanium-400 ml-1">guest@webnexa-core:~$</span>
+          </div>
+          <span class="text-[10px] text-sage-400 bg-sage-950/60 px-2 py-0.5 rounded border border-sage-800/40">CLI Active</span>
+        </div>
+
+        <!-- Quick Command Chips -->
+        <div class="bg-obsidian-950/80 px-4 py-2.5 border-b border-white/[0.04] flex flex-wrap items-center gap-1.5">
+          <span class="text-[10px] text-titanium-500 font-sans">Quick Commands:</span>
+          <button class="term-chip px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-sage-500/20 text-sage-300 text-[10px] border border-white/[0.06] transition-colors" data-cmd="projects">projects</button>
+          <button class="term-chip px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-sage-500/20 text-sage-300 text-[10px] border border-white/[0.06] transition-colors" data-cmd="company">company</button>
+          <button class="term-chip px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-sage-500/20 text-sage-300 text-[10px] border border-white/[0.06] transition-colors" data-cmd="contact">contact</button>
+          <button class="term-chip px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-emerald-500/20 text-emerald-300 text-[10px] border border-emerald-500/30 transition-colors" data-cmd="whatsapp">whatsapp</button>
+          <button class="term-chip px-2.5 py-0.5 rounded-lg bg-white/[0.04] hover:bg-rose-500/20 text-rose-300 text-[10px] border border-white/[0.06] transition-colors ml-auto" data-cmd="clear">clear</button>
+        </div>
+
+        <!-- Output Log Area -->
+        <div id="term-logs" class="p-4 sm:p-5 h-64 overflow-y-auto space-y-2.5 text-titanium-300 bg-obsidian-950/70">
+          <div class="text-sage-400">
+            [WEBNEXA_KERNEL v2026.2] Session initialized.<br>
+            Founder: Siddharth Singh • Pokaran, Rajasthan.<br>
+            Type <span class="text-white font-bold">help</span> or tap quick command chips to query database.
+          </div>
+        </div>
+
+        <!-- Input Form -->
+        <form id="term-form" class="bg-obsidian-900/90 px-4 py-3 border-t border-white/[0.06] flex items-center gap-2">
+          <span class="text-sage-400 font-bold">$</span>
+          <input type="text" id="term-input" autocomplete="off" spellcheck="false" placeholder="type a command (e.g. projects, company, contact)..." class="w-full bg-transparent text-white focus:outline-none font-mono text-xs placeholder-titanium-600">
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- 6. CONTACT & DIRECT CHANNELS (Call, WhatsApp, Email) -->
+    <section id="contact" class="py-14 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      
+      <div class="dribbble-glass rounded-3xl p-6 sm:p-10 border border-white/[0.08] relative overflow-hidden shadow-2xl">
+        
+        <div class="max-w-xl mx-auto text-center mb-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-sage-950/60 border border-sage-800/40 text-[10px] font-mono text-sage-300 tracking-wider uppercase mb-2">
+            <i data-lucide="radio" class="w-3 h-3 text-sage-400"></i> Direct Channel
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Connect with Siddharth Singh</h2>
+          <p class="text-titanium-400 text-xs sm:text-sm mt-1">Founder & Lead Solutions Architect at Webnexa. Available for software contracts, custom ERP solutions, and full-stack engineering roles.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          
+          <!-- Direct Phone -->
+          <a href="tel:+918619089899" onclick="playTactileAudio('tap')" class="p-5 rounded-2xl spotlight-card flex flex-col justify-between group">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-2xl bg-celestial-950 border border-celestial-500/30 flex items-center justify-center text-celestial-400 group-hover:scale-105 transition-transform">
+                <i data-lucide="phone" class="w-4 h-4"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-titanium-500 font-mono">Company Phone</div>
+                <div class="text-xs font-bold text-white group-hover:text-celestial-300">+91 861 908 9899</div>
+              </div>
+            </div>
+            <div class="text-[10px] font-mono text-titanium-400 flex items-center gap-1 group-hover:underline">
+              <span>Instant Call</span>
+              <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+            </div>
+          </a>
+
+          <!-- Direct WhatsApp -->
+          <a href="https://wa.me/918619089899?text=Hello%20Siddharth,%20I%20am%20interested%20in%20Webnexa's%20digital%20and%20ERP%20solutions." target="_blank" rel="noopener noreferrer" onclick="playTactileAudio('tap')" class="p-5 rounded-2xl spotlight-card flex flex-col justify-between group">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-950 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-titanium-500 font-mono">Official WhatsApp</div>
+                <div class="text-xs font-bold text-white group-hover:text-emerald-300">+91 861 908 9899</div>
+              </div>
+            </div>
+            <div class="text-[10px] font-mono text-emerald-400 flex items-center gap-1 group-hover:underline">
+              <span>Open Chat</span>
+              <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+            </div>
+          </a>
+
+          <!-- Official Email with Copy Action -->
+          <div class="p-5 rounded-2xl spotlight-card flex flex-col justify-between group">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-2xl bg-sage-950 border border-sage-500/30 flex items-center justify-center text-sage-400">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+              </div>
+              <div class="text-left">
+                <div class="text-[10px] text-titanium-500 font-mono">Company Email</div>
+                <div class="text-xs font-semibold text-white truncate max-w-[140px]" title="webnexa2026@gmail.com">webnexa2026@gmail.com</div>
+              </div>
+            </div>
+            <button onclick="copyEmailToClipboard()" class="text-[10px] font-mono text-sage-400 flex items-center gap-1 hover:underline text-left">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span>Click to Copy Email</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Corporate Website Link -->
+        <div class="mt-8 pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-titanium-400">
+          <a href="https://webnexa-wine.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-white flex items-center gap-1.5 transition-colors">
+            <i data-lucide="globe" class="w-3.5 h-3.5 text-sage-400"></i> Corporate: webnexa-wine.vercel.app
+          </a>
+          <span class="text-titanium-600 hidden sm:inline">•</span>
+          <span class="text-titanium-400">Location: Pokaran / Jodhpur, Rajasthan</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 text-center text-xs font-mono text-titanium-500 border-t border-white/[0.04]">
+      <div>© 2026 Webnexa • Siddharth Singh • All Rights Reserved</div>
+      <div class="text-titanium-600 mt-1">High-Precision Systems Engineering • Powered by Three.js & Web Audio API</div>
+    </footer>
+
+  </main>
+
+  <!-- MOBILE-FIRST BOTTOM FLOATING DOCK -->
+  <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 dribbble-glass px-3.5 py-2 rounded-full border border-white/[0.12] shadow-2xl flex items-center gap-1 sm:gap-2">
+    
+    <a href="#hero" class="dock-item p-2 sm:px-3 sm:py-2 rounded-full hover:bg-white/[0.06] text-titanium-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all" onclick="playTactileAudio('tap')">
+      <i data-lucide="box" class="w-4 h-4 text-sage-400"></i>
+      <span class="hidden sm:inline">3D Monolith</span>
+    </a>
+
+    <a href="#velocity" class="dock-item p-2 sm:px-3 sm:py-2 rounded-full hover:bg-white/[0.06] text-titanium-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all" onclick="playTactileAudio('tap')">
+      <i data-lucide="gauge" class="w-4 h-4 text-celestial-400"></i>
+      <span class="hidden sm:inline">Velocity</span>
+    </a>
+
+    <a href="#projects" class="dock-item p-2 sm:px-3 sm:py-2 rounded-full hover:bg-white/[0.06] text-titanium-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all" onclick="playTactileAudio('tap')">
+      <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+      <span class="hidden sm:inline">10 Projects</span>
+    </a>
+
+    <a href="#terminal" class="dock-item p-2 sm:px-3 sm:py-2 rounded-full hover:bg-white/[0.06] text-titanium-300 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-all" onclick="playTactileAudio('tap')">
+      <i data-lucide="terminal" class="w-4 h-4 text-titanium-200"></i>
+      <span class="hidden sm:inline">CLI Shell</span>
+    </a>
+
+    <div class="h-4 w-[1px] bg-white/[0.12] mx-0.5"></div>
+
+    <a href="https://wa.me/918619089899?text=Hello%20Siddharth,%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" class="dock-item px-3.5 py-1.5 rounded-full bg-sage-500 hover:bg-sage-400 text-obsidian-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-sage-500/20 active:scale-95" onclick="playTactileAudio('chime')">
+      <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+      <span>WhatsApp</span>
+    </a>
+
+  </nav>
+
+  <!-- ARCHITECTURE BLUEPRINT DETAIL MODAL -->
+  <div id="blueprint-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-obsidian-950/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-250">
+    <div id="blueprint-card" class="dribbble-glass border border-sage-500/30 max-w-xl w-full p-6 sm:p-7 rounded-3xl relative shadow-2xl max-h-[88vh] overflow-y-auto transform scale-95 transition-transform duration-250">
+      
+      <!-- Close Button -->
+      <button onclick="closeBlueprintModal()" class="absolute top-5 right-5 p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-titanium-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="mb-4">
+        <span id="bm-badge" class="px-2.5 py-0.5 rounded-md text-[10px] font-mono text-sage-300 bg-sage-950/80 border border-sage-800/40 uppercase tracking-wider">Category</span>
+        <h3 id="bm-title" class="text-xl sm:text-2xl font-bold text-white mt-1.5">Project Name</h3>
+        <p id="bm-stack" class="text-xs font-mono text-celestial-400 mt-1">Tech Stack</p>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-titanium-300 leading-relaxed">
+        <div>
+          <h4 class="font-mono text-[11px] text-titanium-400 uppercase tracking-wider font-semibold mb-2">Key Engineering Deliverables:</h4>
+          <ul id="bm-bullets" class="space-y-2 list-disc list-inside text-titanium-300 text-xs"></ul>
+        </div>
+
+        <div class="p-4 rounded-xl bg-obsidian-900/90 border border-sage-500/20">
+          <div class="text-[11px] font-mono text-sage-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-1.5">
+            <i data-lucide="zap" class="w-3.5 h-3.5"></i> AI Acceleration & Architectural Impact:
+          </div>
+          <p id="bm-ai-impact" class="text-xs text-titanium-300"></p>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between gap-3">
+        <a id="bm-live" href="#" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-sage-500 hover:bg-sage-400 text-obsidian-950 text-xs font-bold transition-colors flex items-center gap-1.5 shadow-md shadow-sage-500/10">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open Live App
+        </a>
+        <button onclick="closeBlueprintModal()" class="text-xs font-mono text-titanium-500 hover:text-white">Close (Esc)</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-20 right-4 sm:right-8 z-50 transform translate-y-12 opacity-0 transition-all duration-300 dribbble-glass border border-sage-500/40 px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2 text-xs text-white">
+    <i data-lucide="check" class="w-4 h-4 text-sage-400"></i>
+    <span id="toast-text">Action completed</span>
+  </div>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script>
+    /* ==========================================================================
+       1. PRODUCTION CLIENT REPOSITORY (Exact 10 Projects)
+       ========================================================================== */
+    const WEBNEXA_CONFIG = {
+      companyName: "Webnexa",
+      founderName: "Siddharth Singh",
+      phone: "+91 861 908 9899",
+      whatsapp: "+91 861 908 9899",
+      email: "webnexa2026@gmail.com",
+      website: "https://webnexa-wine.vercel.app/",
+      projects: [
+        {
+          id: "school-management-portal",
+          title: "school-management-portal",
+          category: "enterprise",
+          badge: "Enterprise EdTech",
+          url: "https://school-management-portal-bqecuimit.vercel.app/",
+          tech: "Next.js • Firebase Firestore • Python WeasyPrint",
+          summary: "Comprehensive multi-tenant school administration system featuring student admission workflows, class rosters, and dynamic fee dues tracker.",
+          bullets: [
+            "Automated student enrollment and instant credentials generation with strict Firestore security rules.",
+            "Fee dues tracking radar with automated WhatsApp notification integration for prompt guardian alerts.",
+            "Server-side Python/WeasyPrint compilation engine generating pixel-perfect admit cards, receipts, and marksheets with zero print overflow."
+          ],
+          aiImpact: "Synthesized multi-tenant Firestore security rules and complex relational state tables in 2 days using AI code copilots."
+        },
+        {
+          id: "my-web",
+          title: "my web (Webnexa Official)",
+          category: "commercial",
+          badge: "Corporate Portal",
+          url: "https://webnexa-wine.vercel.app/",
+          tech: "Next.js • Tailwind CSS • Vercel CDN • Modern UI",
+          summary: "Flagship digital agency and software solutions portal showcasing enterprise services, architecture methodology, and digital acceleration packages.",
+          bullets: [
+            "High-contrast glassmorphic corporate UI with interactive service calculators and responsive design.",
+            "Sub-second page speeds optimized with Vercel edge networks and lightweight asset bundling.",
+            "Integrated direct consultation channels via WhatsApp API and mail gateway."
+          ],
+          aiImpact: "Designed, coded, and deployed the complete multi-section corporate web presence in under 18 hours using Claude 3.7 and Cursor IDE."
+        },
+        {
+          id: "sweet-shop-app",
+          title: "sweet-shop-app",
+          category: "lifestyle",
+          badge: "E-Commerce App",
+          url: "https://sweet-shop-app2.vercel.app/",
+          tech: "Next.js • React • Tailwind • Vercel",
+          summary: "Modern confectionery ordering platform with dynamic sweet catalog, weight-based pricing, and instant cart dispatch.",
+          bullets: [
+            "Categorized catalog for traditional sweets, snacks, and festive gift boxes.",
+            "Dynamic weight calculator (250g, 500g, 1kg) with real-time bill aggregation.",
+            "Optimized touch-friendly shopping cart engineered for fast mobile checkout."
+          ],
+          aiImpact: "Rapidly scaffolded cart state machine and responsive product grid using Cursor IDE within 6 hours."
+        },
+        {
+          id: "demo-restaurant",
+          title: "demo-restaurant",
+          category: "lifestyle",
+          badge: "Culinary & Dining",
+          url: "https://demo-restaurant1223.vercel.app/",
+          tech: "Next.js • Responsive UI • Food Catalog",
+          summary: "Digital dining showcase and restaurant menu portal with interactive food categories, chef specials, and table booking inquiries.",
+          bullets: [
+            "Visual food menu with dietary filters (Pure Veg, Specials, Desserts).",
+            "Direct table reservation inquiry form with instant mobile integration.",
+            "Sensory-appealing photography layout optimized with lazy loading."
+          ],
+          aiImpact: "Synthesized responsive layouts and menu sorting algorithms with zero boilerplate friction."
+        },
+        {
+          id: "demo-hospital",
+          title: "DEMO HOSPITAL & CLINIC WEBSITE",
+          category: "enterprise",
+          badge: "OPD Queue System",
+          url: "https://dentalpokaran-in.netlify.app/",
+          tech: "Next.js / HTML5 • Queue Logic • Netlify CDN",
+          summary: "High-speed OPD presentation and clinic management portal featuring patient queue tracking, token validation, and clinical services.",
+          bullets: [
+            "Self-service patient token lookup and doctor availability dashboard.",
+            "Structured diagnostic inquiry modules for Lab, X-Ray, and Dental consultations.",
+            "Ultra-lightweight static bundle ensuring smooth operation even on low-bandwidth rural connections."
+          ],
+          aiImpact: "Prototyped full digital OPD flow and clinic queue states using AI prompt pipelines in a single development session."
+        },
+        {
+          id: "mall",
+          title: "mall (Commercial Complex)",
+          category: "commercial",
+          badge: "Commercial Real Estate",
+          url: "https://ms-mall.netlify.app/",
+          tech: "HTML5 • Netlify • Commercial Directory",
+          summary: "Commercial complex directory displaying retail stores, floor plans, anchor tenants, and leasing opportunities.",
+          bullets: [
+            "Floor-by-floor retail directory and business categorization for shoppers.",
+            "Commercial rental inquiry section for new business leasing.",
+            "Clean mobile navigation optimized for fast mall visitor orientation."
+          ],
+          aiImpact: "Completed entire multi-floor directory structure in a single sprint using AI-assisted HTML/Tailwind generator."
+        },
+        {
+          id: "om-bikaner-pokaran",
+          title: "om-bikaner-pokaran",
+          category: "lifestyle",
+          badge: "Regional Food Brand",
+          url: "https://om-bikaner-pokaran.netlify.app/",
+          tech: "Modern Web • Netlify • Local Brand",
+          summary: "Official digital presence for Om Bikaner Pokaran, showcasing authentic Bikaneri namkeen, traditional sweets, and regional specialities.",
+          bullets: [
+            "Rich product gallery highlighting signature regional snacks and sweets.",
+            "Google Maps store navigation and direct WhatsApp order button.",
+            "High performance on 4G/3G mobile networks."
+          ],
+          aiImpact: "Turnaround time from initial client brief to live domain was under 24 hours."
+        },
+        {
+          id: "shiksha-academy-pokaran",
+          title: "shiksha-academy-pokaran",
+          category: "lifestyle",
+          badge: "Academic Coaching",
+          url: "https://shiksha-academy-pokaran.netlify.app/",
+          tech: "Educational Web • Netlify • Student Portal",
+          summary: "Educational coaching institute portal providing course curriculums, batch schedules, faculty profiles, and student admission inquiries.",
+          bullets: [
+            "Comprehensive course catalog for school tuition and competitive exam preparation.",
+            "Online admission inquiry form with automated SMS/email alerts.",
+            "Dedicated section for student achievements and academic results."
+          ],
+          aiImpact: "Structured academic curriculums and admission intake form in record time using automated scaffolding."
+        },
+        {
+          id: "balaji-dental",
+          title: "Balaji Dental Hospital & Medical Store",
+          subtitle: "Dr. Rajendra Singh",
+          category: "enterprise",
+          badge: "Healthcare & Clinic",
+          url: "https://curious-malasada-831652.netlify.app/",
+          tech: "Responsive Web • Local SEO Schema • Dr. Rajendra Singh",
+          summary: "Official healthcare portal and medical store presence for Dr. Rajendra Singh, engineered for high patient discovery and appointment booking.",
+          bullets: [
+            "Patient appointment flow with direct clinical contact and service breakdown.",
+            "Local Schema.org metadata and Google Map indexing to rank top for regional dental inquiries.",
+            "Mobile-first responsive presentation with 100/100 Google Lighthouse mobile accessibility rating."
+          ],
+          aiImpact: "Generated schema markup and optimized medical catalog structure in hours, facilitating top regional organic rankings."
+        },
+        {
+          id: "akashdeep-boxes",
+          title: "Akashdeep-Boxes---Luxury-Packaging",
+          category: "commercial",
+          badge: "Industrial 3D Showcase",
+          url: "https://walaphysics73-coder.github.io/Akashdeep-Boxes---Luxury-Packaging/",
+          demo3dUrl: "https://walaphysics73-coder.github.io/Akashdeep-Boxes---Luxury-Packaging/5.html",
+          tech: "3D CSS / JS • Luxury Packaging • GitHub Pages",
+          summary: "Interactive 3D product showcase and digital catalog for luxury rigid boxes, sweet boxes, and custom branded packaging.",
+          bullets: [
+            "Interactive product viewer displaying multi-tier box dimensions, finishes, and textured packaging options.",
+            "High-end luxury aesthetic with bespoke gold and obsidian accents tailored for confectionery & gift brands.",
+            "Interactive 3D unfold demo available on concept page 5.html."
+          ],
+          aiImpact: "Engineered complex interactive CSS 3D box unfold animations and layout transformations with AI mathematical assistance."
+        }
+      ]
+    };
+
+    /* ==========================================================================
+       2. TACTILE ACOUSTIC ENGINE (Web Audio API - 528 Hz Harmonic Chimes)
+       ========================================================================== */
+    let audioCtx = null;
+    let isSoundMuted = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTactileAudio(type = 'tap') {
+      if (isSoundMuted) return;
+      try {
+        initAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'tap') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(340, now);
+          osc.frequency.exponentialRampToValueAtTime(160, now + 0.04);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else if (type === 'chime') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(528, now); // Solfeggio 528 Hz frequency
+          osc.frequency.exponentialRampToValueAtTime(660, now + 0.2);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        }
+      } catch (e) {}
+    }
+
+    const soundToggleBtn = document.getElementById('sound-toggle-btn');
+    const soundIcon = document.getElementById('sound-icon');
+    const soundLabel = document.getElementById('sound-label');
+
+    soundToggleBtn.addEventListener('click', () => {
+      initAudio();
+      isSoundMuted = !isSoundMuted;
+      if (isSoundMuted) {
+        soundIcon.setAttribute('data-lucide', 'volume-x');
+        soundLabel.textContent = 'Acoustics: Muted';
+        showToast('Tactile audio muted');
+      } else {
+        soundIcon.setAttribute('data-lucide', 'volume-2');
+        soundLabel.textContent = 'Acoustics: Active';
+        playTactileAudio('chime');
+        showToast('Harmonic audio active (528 Hz)');
+      }
+      if (window.lucide) lucide.createIcons();
+    });
+
+    /* ==========================================================================
+       3. THREE.JS SPATIAL MONOLITH (Inertia Touch & Drag Engine)
+       ========================================================================== */
+    let scene, camera, renderer, crystalMesh, wireMesh, orbitRing, orbitRing2, particleSystem;
+    let isDragging = false;
+    let prevMousePos = { x: 0, y: 0 };
+    let rotSpeed = { x: 0.002, y: 0.003 };
+    let momentum = { x: 0, y: 0 };
+    let fpsFrames = 0, lastFpsUpdate = performance.now();
+
+    function initSpatialArtifact() {
+      const canvas = document.getElementById('artifact-canvas');
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+      
+      const isMobile = width < 768;
+      camera.position.z = isMobile ? 8.2 : 6.8;
+      camera.position.y = isMobile ? -0.7 : 0.2;
+
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Quantum Polyhedron Core
+      const coreGeo = new THREE.IcosahedronGeometry(1.5, 0);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: 0x10b981,
+        wireframe: false,
+        transparent: true,
+        opacity: 0.14
+      });
+      crystalMesh = new THREE.Mesh(coreGeo, coreMat);
+      scene.add(crystalMesh);
+
+      // Outer Wireframe Lattice
+      const wireGeo = new THREE.IcosahedronGeometry(1.95, 1);
+      const wireMat = new THREE.MeshBasicMaterial({
+        color: 0x7dd3fc,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.22
+      });
+      wireMesh = new THREE.Mesh(wireGeo, wireMat);
+      scene.add(wireMesh);
+
+      // Primary Gyroscopic Ring
+      const ringGeo = new THREE.TorusGeometry(2.5, 0.015, 8, 80);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x34d399,
+        transparent: true,
+        opacity: 0.28
+      });
+      orbitRing = new THREE.Mesh(ringGeo, ringMat);
+      orbitRing.rotation.x = Math.PI / 3;
+      scene.add(orbitRing);
+
+      // Secondary Gyroscopic Ring
+      const ringGeo2 = new THREE.TorusGeometry(2.75, 0.012, 8, 80);
+      const ringMat2 = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.2
+      });
+      orbitRing2 = new THREE.Mesh(ringGeo2, ringMat2);
+      orbitRing2.rotation.y = Math.PI / 4;
+      scene.add(orbitRing2);
+
+      // Ambient Particle Field
+      const partCount = isMobile ? 55 : 100;
+      const partGeo = new THREE.BufferGeometry();
+      const partPos = new Float32Array(partCount * 3);
+
+      for (let i = 0; i < partCount * 3; i += 3) {
+        partPos[i] = (Math.random() - 0.5) * 12;
+        partPos[i + 1] = (Math.random() - 0.5) * 10;
+        partPos[i + 2] = (Math.random() - 0.5) * 8;
+      }
+      partGeo.setAttribute('position', new THREE.BufferAttribute(partPos, 3));
+
+      const partMat = new THREE.PointsMaterial({
+        color: 0xa7f3d0,
+        size: 0.045,
+        transparent: true,
+        opacity: 0.65
+      });
+      particleSystem = new THREE.Points(partGeo, partMat);
+      scene.add(particleSystem);
+
+      // Drag & Touch Listeners
+      const handleStart = (x, y) => {
+        isDragging = true;
+        prevMousePos = { x, y };
+        momentum = { x: 0, y: 0 };
+        playTactileAudio('tap');
+      };
+
+      const handleMove = (x, y) => {
+        if (!isDragging) return;
+        const deltaX = x - prevMousePos.x;
+        const deltaY = y - prevMousePos.y;
+
+        momentum = { x: deltaX * 0.0035, y: deltaY * 0.0035 };
+        crystalMesh.rotation.y += momentum.x;
+        crystalMesh.rotation.x += momentum.y;
+        wireMesh.rotation.y += momentum.x;
+        wireMesh.rotation.x += momentum.y;
+
+        prevMousePos = { x, y };
+      };
+
+      const handleEnd = () => {
+        isDragging = false;
+      };
+
+      canvas.addEventListener('mousedown', e => handleStart(e.clientX, e.clientY));
+      window.addEventListener('mousemove', e => handleMove(e.clientX, e.clientY));
+      window.addEventListener('mouseup', handleEnd);
+
+      canvas.addEventListener('touchstart', e => {
+        if (e.touches.length > 0) handleStart(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', e => {
+        if (e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchend', handleEnd);
+      window.addEventListener('resize', onCanvasResize);
+
+      document.getElementById('reset-cam-btn').addEventListener('click', () => {
+        crystalMesh.rotation.set(0, 0, 0);
+        wireMesh.rotation.set(0, 0, 0);
+        momentum = { x: 0, y: 0 };
+        playTactileAudio('chime');
+      });
+    }
+
+    function onCanvasResize() {
+      if (!camera || !renderer) return;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      camera.aspect = width / height;
+      const isMobile = width < 768;
+      camera.position.z = isMobile ? 8.2 : 6.8;
+      camera.position.y = isMobile ? -0.7 : 0.2;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function animateSpatialArtifact() {
+      requestAnimationFrame(animateSpatialArtifact);
+
+      if (!isDragging) {
+        momentum.x *= 0.94;
+        momentum.y *= 0.94;
+        crystalMesh.rotation.y += rotSpeed.y + momentum.x;
+        crystalMesh.rotation.x += rotSpeed.x + momentum.y;
+
+        wireMesh.rotation.y -= 0.0016;
+        wireMesh.rotation.z += 0.001;
+      }
+
+      if (orbitRing) orbitRing.rotation.z += 0.0035;
+      if (orbitRing2) orbitRing2.rotation.x -= 0.0025;
+      if (particleSystem) particleSystem.rotation.y += 0.0005;
+
+      renderer.render(scene, camera);
+
+      fpsFrames++;
+      const now = performance.now();
+      if (now - lastFpsUpdate >= 1000) {
+        const fpsCounter = document.getElementById('fps-counter');
+        if (fpsCounter) fpsCounter.textContent = fpsFrames;
+        fpsFrames = 0;
+        lastFpsUpdate = now;
+      }
+    }
+
+    /* ==========================================================================
+       4. INTERACTIVE VELOCITY BENCHMARK
+       ========================================================================== */
+    const scopeSlider = document.getElementById('scope-slider');
+    const scopeLabel = document.getElementById('scope-label');
+    const tradTotalDays = document.getElementById('trad-total-days');
+    const aiTotalDays = document.getElementById('ai-total-days');
+
+    const tradSpec = document.getElementById('trad-spec');
+    const tradCode = document.getElementById('trad-code');
+    const tradFix = document.getElementById('trad-fix');
+    const aiSpec = document.getElementById('ai-spec');
+    const aiCode = document.getElementById('ai-code');
+    const aiFix = document.getElementById('ai-fix');
+
+    const tradSpecBar = document.getElementById('trad-spec-bar');
+    const tradCodeBar = document.getElementById('trad-code-bar');
+    const tradFixBar = document.getElementById('trad-fix-bar');
+    const aiSpecBar = document.getElementById('ai-spec-bar');
+    const aiCodeBar = document.getElementById('ai-code-bar');
+    const aiFixBar = document.getElementById('ai-fix-bar');
+
+    const BENCHMARK_METRICS = {
+      1: {
+        label: "Commercial Web Portal & Local SEO",
+        tradTotal: "14 Days",
+        aiTotal: "2.5 Days",
+        trad: { spec: "3 days", code: "7 days", fix: "4 days", sBar: "50%", cBar: "70%", fBar: "55%" },
+        ai: { spec: "0.5 days", code: "1.0 days", fix: "1.0 days", sBar: "18%", cBar: "25%", fBar: "25%" }
+      },
+      2: {
+        label: "Enterprise ERP Portal & Hospital Kiosk",
+        tradTotal: "28 Days",
+        aiTotal: "6 Days",
+        trad: { spec: "6 days", code: "12 days", fix: "10 days", sBar: "70%", cBar: "85%", fBar: "65%" },
+        ai: { spec: "1.5 days", code: "2.5 days", fix: "2.0 days", sBar: "22%", cBar: "30%", fBar: "25%" }
+      },
+      3: {
+        label: "Full Multi-Platform Ecosystem",
+        tradTotal: "65 Days",
+        aiTotal: "14 Days",
+        trad: { spec: "15 days", code: "30 days", fix: "20 days", sBar: "95%", cBar: "100%", fBar: "85%" },
+        ai: { spec: "3.0 days", code: "6.0 days", fix: "5.0 days", sBar: "35%", cBar: "42%", fBar: "36%" }
+      }
+    };
+
+    scopeSlider.addEventListener('input', e => {
+      const val = e.target.value;
+      const data = BENCHMARK_METRICS[val];
+      scopeLabel.textContent = data.label;
+      tradTotalDays.textContent = data.tradTotal;
+      aiTotalDays.textContent = data.aiTotal;
+
+      tradSpec.textContent = data.trad.spec;
+      tradCode.textContent = data.trad.code;
+      tradFix.textContent = data.trad.fix;
+
+      aiSpec.textContent = data.ai.spec;
+      aiCode.textContent = data.ai.code;
+      aiFix.textContent = data.ai.fix;
+
+      tradSpecBar.style.width = data.trad.sBar;
+      tradCodeBar.style.width = data.trad.cBar;
+      tradFixBar.style.width = data.trad.fBar;
+
+      aiSpecBar.style.width = data.ai.sBar;
+      aiCodeBar.style.width = data.ai.cBar;
+      aiFixBar.style.width = data.ai.fBar;
+
+      playTactileAudio('tap');
+    });
+
+    /* ==========================================================================
+       5. RENDER 10 LIVE PROJECTS WITH DRIBBBLE SPOTLIGHT EFFECT
+       ========================================================================== */
+    function renderProjects(filter = 'all') {
+      const grid = document.getElementById('projects-grid');
+      grid.innerHTML = '';
+
+      const filtered = filter === 'all' 
+        ? WEBNEXA_CONFIG.projects 
+        : WEBNEXA_CONFIG.projects.filter(p => p.category === filter);
+
+      filtered.forEach((project, idx) => {
+        const card = document.createElement('div');
+        card.className = "spotlight-card p-6 flex flex-col justify-between cursor-pointer group";
+        card.onclick = () => openBlueprintModal(project);
+
+        // Pointer spotlight effect tracker
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+
+        let extraDemoBtn = '';
+        if (project.demo3dUrl) {
+          extraDemoBtn = `
+            <a href="${project.demo3dUrl}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-celestial-500/10 hover:bg-celestial-500/20 text-celestial-300 text-[11px] font-mono border border-celestial-500/30 flex items-center gap-1 shadow-sm" title="Launch 3D Unfold Demo">
+              <span>3D Concept</span>
+              <i data-lucide="box" class="w-3 h-3"></i>
+            </a>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-sage-950/80 border border-sage-800/40 text-sage-300 uppercase">${project.badge}</span>
+              <span class="text-titanium-500 font-mono">SYS_${String(idx + 1).padStart(2, '0')}</span>
+            </div>
+            
+            <h3 class="text-base font-bold text-white group-hover:text-sage-300 transition-colors line-clamp-1 mb-1">${project.title}</h3>
+            ${project.subtitle ? `<div class="text-xs text-titanium-400 font-medium mb-1">${project.subtitle}</div>` : ''}
+            <p class="text-xs font-mono text-celestial-400 mb-2.5 truncate">${project.tech}</p>
+            <p class="text-xs text-titanium-400 leading-relaxed line-clamp-3 mb-5">${project.summary}</p>
+          </div>
+          
+          <div class="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
+            <span class="text-sage-400 flex items-center gap-1 group-hover:underline text-xs">
+              Specs <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </span>
+            
+            <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+              ${extraDemoBtn}
+              <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-sage-500/10 hover:bg-sage-500/20 text-sage-300 text-xs font-mono border border-sage-500/30 flex items-center gap-1.5 transition-colors shadow-sm" title="Launch Live Web App">
+                <span>Live App</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Filter Button Handler
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.className = "filter-btn px-3 py-1.5 rounded-xl text-titanium-300 hover:text-white hover:bg-white/[0.05] transition-all";
+        });
+        btn.className = "filter-btn px-3 py-1.5 rounded-xl text-obsidian-950 bg-sage-400 font-semibold transition-all shadow-sm";
+        const filter = btn.getAttribute('data-filter');
+        renderProjects(filter);
+        playTactileAudio('tap');
+      });
+    });
+
+    /* ==========================================================================
+       6. ARCHITECTURE BLUEPRINT DETAIL MODAL
+       ========================================================================== */
+    const modal = document.getElementById('blueprint-modal');
+    const modalContainer = document.getElementById('blueprint-card');
+
+    function openBlueprintModal(project) {
+      if (!project) return;
+
+      document.getElementById('bm-badge').textContent = project.badge;
+      document.getElementById('bm-title').textContent = project.title;
+      document.getElementById('bm-stack').textContent = project.tech;
+      
+      const bulletsList = document.getElementById('bm-bullets');
+      bulletsList.innerHTML = project.bullets.map(b => `<li class="leading-relaxed">${b}</li>`).join('');
+
+      document.getElementById('bm-ai-impact').textContent = project.aiImpact;
+      document.getElementById('bm-live').href = project.url;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modalContainer.classList.remove('scale-95');
+      }, 10);
+
+      playTactileAudio('chime');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeBlueprintModal() {
+      modal.classList.add('opacity-0');
+      modalContainer.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 250);
+      playTactileAudio('tap');
+    }
+
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeBlueprintModal();
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeBlueprintModal();
+      }
+    });
+
+    /* ==========================================================================
+       7. INTERACTIVE CLI TERMINAL ENGINE
+       ========================================================================== */
+    const termLogs = document.getElementById('term-logs');
+    const termForm = document.getElementById('term-form');
+    const termInput = document.getElementById('term-input');
+
+    const COMMANDS = {
+      help: () => `
+        <span class="text-sage-400 font-bold">Supported Commands:</span><br>
+        • <span class="text-celestial-300">projects</span>  : List all 10 live production deployments<br>
+        • <span class="text-celestial-300">company</span>   : Webnexa overview & founder profile<br>
+        • <span class="text-celestial-300">services</span>  : ERP, PDF Engine & Web engineering<br>
+        • <span class="text-celestial-300">contact</span>   : Phone, WhatsApp, and email channels<br>
+        • <span class="text-celestial-300">whatsapp</span>  : Direct chat link for instant dispatch<br>
+        • <span class="text-celestial-300">clear</span>     : Flush terminal buffer
+      `,
+      projects: () => `
+        <span class="text-sage-400 font-bold">[WEBNEXA PRODUCTION DEPLOYMENTS - 10 APPS]</span><br>
+        1. school-management-portal : https://school-management-portal-bqecuimit.vercel.app/<br>
+        2. my web (Webnexa Official) : https://webnexa-wine.vercel.app/<br>
+        3. sweet-shop-app : https://sweet-shop-app2.vercel.app/<br>
+        4. demo-restaurant : https://demo-restaurant1223.vercel.app/<br>
+        5. DEMO HOSPITAL & CLINIC WEBSITE : https://dentalpokaran-in.netlify.app/<br>
+        6. mall (Commercial Complex) : https://ms-mall.netlify.app/<br>
+        7. om-bikaner-pokaran : https://om-bikaner-pokaran.netlify.app/<br>
+        8. shiksha-academy-pokaran : https://shiksha-academy-pokaran.netlify.app/<br>
+        9. Balaji Dental Hospital & Medical Store : https://curious-malasada-831652.netlify.app/<br>
+        10. Akashdeep-Boxes---Luxury-Packaging : https://walaphysics73-coder.github.io/Akashdeep-Boxes---Luxury-Packaging/
+      `,
+      company: () => `
+        <span class="text-sage-400 font-bold">[WEBNEXA DIGITAL & SOFTWARE SOLUTIONS]</span><br>
+        Founder & Lead Architect: <span class="text-white font-bold">Siddharth Singh</span><br>
+        Academic Background: B.Sc. Mathematics & Physics (Final Year, JNVU) + ITI COPA Certified.<br>
+        Core Focus: High-velocity AI-augmented development, custom enterprise ERPs, and sub-second web platforms.
+      `,
+      services: () => `
+        <span class="text-sage-400 font-bold">[CORE CAPABILITIES]</span><br>
+        • Enterprise ERPs with multi-room queue scheduling & fee radars<br>
+        • Python & WeasyPrint server-side PDF engines (zero margin drift)<br>
+        • Flutter cross-platform mobile apps with Android FLAG_SECURE<br>
+        • Sub-second local SEO business portals
+      `,
+      contact: () => `
+        <span class="text-sage-400 font-bold">[OFFICIAL WEBNEXA CHANNELS]</span><br>
+        • Direct Phone : <span class="text-celestial-300">+91 861 908 9899</span><br>
+        • WhatsApp     : <span class="text-emerald-400">+91 861 908 9899</span><br>
+        • Email        : <span class="text-sage-300">webnexa2026@gmail.com</span><br>
+        • Main Portal  : https://webnexa-wine.vercel.app/
+      `,
+      whatsapp: () => `
+        <span class="text-emerald-400">Opening WhatsApp dispatch channel...</span><br>
+        Link: <a href="https://wa.me/918619089899" target="_blank" class="underline text-sage-300">wa.me/918619089899</a>
+      `
+    };
+
+    function executeCommand(rawCmd) {
+      const cmd = rawCmd.trim().toLowerCase();
+      if (!cmd) return;
+
+      const userLine = document.createElement('div');
+      userLine.className = 'text-titanium-400';
+      userLine.innerHTML = `<span class="text-sage-400">$</span> ${escapeHTML(rawCmd)}`;
+      termLogs.appendChild(userLine);
+
+      if (cmd === 'clear') {
+        termLogs.innerHTML = '';
+        return;
+      }
+
+      const response = document.createElement('div');
+      response.className = 'text-titanium-300 leading-relaxed';
+
+      if (COMMANDS[cmd]) {
+        response.innerHTML = COMMANDS[cmd]();
+        if (cmd === 'whatsapp') {
+          setTimeout(() => {
+            window.open('https://wa.me/918619089899', '_blank');
+          }, 400);
+        }
+      } else {
+        response.innerHTML = `<span class="text-rose-400">Command not found: "${escapeHTML(cmd)}".</span> Type <span class="text-white font-bold">help</span> for valid queries.`;
+      }
+
+      termLogs.appendChild(response);
+      termLogs.scrollTop = termLogs.scrollHeight;
+      playTactileAudio('tap');
+    }
+
+    termForm.addEventListener('submit', e => {
+      e.preventDefault();
+      executeCommand(termInput.value);
+      termInput.value = '';
+    });
+
+    document.querySelectorAll('.term-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cmd = chip.getAttribute('data-cmd');
+        executeCommand(cmd);
+      });
+    });
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+
+    /* ==========================================================================
+       8. CLIPBOARD & TOAST SYSTEM
+       ========================================================================== */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = msg;
+
+      toast.classList.remove('translate-y-12', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-12', 'opacity-0');
+      }, 3000);
+    }
+
+    function copyEmailToClipboard() {
+      const email = WEBNEXA_CONFIG.email;
+      const tempInput = document.createElement('input');
+      tempInput.value = email;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast(`Copied to clipboard: ${email}`);
+        playTactileAudio('chime');
+      } catch (err) {
+        showToast(email);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    /* ==========================================================================
+       9. APPLICATION BOOTSTRAP
+       ========================================================================== */
+    window.onload = function() {
+      initSpatialArtifact();
+      animateSpatialArtifact();
+      renderProjects('all');
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    };
+  </script>
+
+</body>
+</html>
